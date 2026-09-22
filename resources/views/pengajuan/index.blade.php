@@ -7,11 +7,11 @@
 <div class="space-y-6">
 
     <!-- Header Actions & Search Toolbar -->
-    <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl space-y-4">
+    <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-2xl space-y-4">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h3 class="text-lg font-black text-white">Filter & Pencarian Data</h3>
-                <p class="text-xs text-zinc-400">Cari berdasarkan nama siswa, NIS, atau jenis pengajuan surat</p>
+                <p class="text-xs text-zinc-400 font-medium">Cari berdasarkan nama siswa, NIS, atau jenis pengajuan surat</p>
             </div>
             @if(auth()->user()->isSiswa())
                 <a href="{{ route('pengajuan.create') }}" class="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-zinc-950 font-black rounded-xl text-xs shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2">
@@ -24,13 +24,14 @@
         <!-- Filter Form -->
         <form action="{{ route('pengajuan.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-3">
             <div class="md:col-span-2 relative">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari NIS, Nama Siswa, atau Keterangan..."
-                    class="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-semibold text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <input type="text" name="search" id="searchInput" value="{{ request('search') }}" placeholder="Cari NIS, Nama Siswa, atau Keterangan..."
+                    class="w-full pl-10 pr-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-semibold text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    onkeyup="filterTableInstant()">
                 <i data-lucide="search" class="w-4 h-4 text-zinc-500 absolute left-3.5 top-3"></i>
             </div>
 
             <div>
-                <select name="status" class="w-full py-2.5 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <select name="status" id="statusSelect" onchange="filterTableInstant()" class="w-full py-2.5 px-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-semibold text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
                     <option value="">-- Semua Status --</option>
                     <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending (Menunggu)</option>
                     <option value="disetujui" {{ request('status') === 'disetujui' ? 'selected' : '' }}>Disetujui</option>
@@ -39,12 +40,12 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <button type="submit" class="flex-1 py-2.5 bg-orange-500 text-zinc-950 hover:bg-orange-600 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5">
+                <button type="submit" class="flex-1 py-2.5 bg-orange-500 text-zinc-950 hover:bg-orange-600 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-md shadow-orange-500/10">
                     <i data-lucide="filter" class="w-3.5 h-3.5"></i>
                     <span>Terapkan</span>
                 </button>
                 @if(request()->hasAny(['search', 'status', 'jenis_surat_id']))
-                    <a href="{{ route('pengajuan.index') }}" class="py-2.5 px-3 bg-zinc-800 text-zinc-300 hover:bg-zinc-700 rounded-xl text-xs font-bold transition-all">
+                    <a href="{{ route('pengajuan.index') }}" class="py-2.5 px-3 bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 rounded-xl text-xs font-bold transition-all border border-zinc-700">
                         Reset
                     </a>
                 @endif
@@ -86,7 +87,7 @@
                             <td class="py-4 px-6 font-bold text-orange-400">
                                 {{ $item->jenisSurat->nama_surat ?? '-' }}
                             </td>
-                            <td class="py-4 px-6 text-xs text-zinc-300 max-w-xs truncate">
+                            <td class="py-4 px-6 text-xs text-zinc-300 max-w-xs truncate font-medium">
                                 {{ $item->keterangan }}
                             </td>
                             <td class="py-4 px-6 whitespace-nowrap">
@@ -105,7 +106,7 @@
                                 @endif
                             </td>
                             <td class="py-4 px-6 text-right whitespace-nowrap space-x-1">
-                                <a href="{{ route('pengajuan.show', $item->id) }}" class="px-3 py-1.5 bg-orange-500/10 text-orange-400 hover:bg-orange-500 hover:text-zinc-950 rounded-xl text-xs font-black transition-all border border-orange-500/30 inline-flex items-center gap-1">
+                                <a href="{{ route('pengajuan.show', $item->id) }}" class="px-3.5 py-1.5 bg-orange-500/10 text-orange-400 hover:bg-orange-500 hover:text-zinc-950 rounded-xl text-xs font-black transition-all border border-orange-500/30 inline-flex items-center gap-1">
                                     <i data-lucide="eye" class="w-3.5 h-3.5"></i> Detail & Process
                                 </a>
 
@@ -117,7 +118,7 @@
                                     <form action="{{ route('pengajuan.destroy', $item->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" onclick="confirmDelete(this)" class="px-3 py-1.5 bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white rounded-xl text-xs font-bold transition-all border border-rose-500/30 inline-flex items-center gap-1">
+                                        <button type="button" onclick="confirmDelete(this)" class="px-3 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white rounded-xl text-xs font-black transition-all inline-flex items-center gap-1">
                                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
                                         </button>
                                     </form>
@@ -142,4 +143,40 @@
     </div>
 
 </div>
+
+<script>
+    function filterTableInstant() {
+        const searchInput = document.getElementById('searchInput');
+        const statusSelect = document.getElementById('statusSelect');
+        
+        const filterText = searchInput ? searchInput.value.toLowerCase() : '';
+        const filterStatus = statusSelect ? statusSelect.value.toLowerCase() : '';
+
+        const tbody = document.querySelector('tbody');
+        if (!tbody) return;
+        
+        const rows = tbody.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowText = (row.textContent || row.innerText).toLowerCase();
+            
+            // Check text search filter
+            const matchesText = !filterText || rowText.indexOf(filterText) > -1;
+            
+            // Check status filter
+            let matchesStatus = true;
+            if (filterStatus) {
+                // Check if row contains the selected status text
+                matchesStatus = rowText.indexOf(filterStatus) > -1;
+            }
+
+            if (matchesText && matchesStatus) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        }
+    }
+</script>
 @endsection

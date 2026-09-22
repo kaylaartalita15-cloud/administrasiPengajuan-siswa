@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Administrasi Sekolah') - XI RPL</title>
+    <title>@yield('title', 'Administrasi Sekolah')</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,13 +27,6 @@
                             500: '#f97316',
                             600: '#ea580c',
                             700: '#c2410c',
-                        },
-                        dark: {
-                            950: '#09090b',
-                            900: '#121215',
-                            800: '#18181b',
-                            700: '#27272a',
-                            600: '#3f3f46',
                         }
                     }
                 }
@@ -81,45 +74,45 @@
 
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar Navigation -->
-        <aside class="w-64 bg-zinc-900 border-r border-zinc-800/80 text-white flex flex-col shadow-2xl z-20 shrink-0">
+        <aside class="w-64 bg-zinc-950 border-r border-zinc-800/80 text-white flex flex-col z-20 shrink-0">
             <!-- Brand Header -->
-            <div class="p-6 flex items-center gap-3 border-b border-zinc-800/80 bg-zinc-950">
-                <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-2.5 rounded-xl text-zinc-950 font-black shadow-lg shadow-orange-500/20">
-                    <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+            <div class="px-6 py-5 flex items-center gap-3 border-b border-zinc-800/80 bg-zinc-950">
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-2.5 rounded-xl text-zinc-950 font-black shadow-lg shadow-orange-500/20 shrink-0">
+                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h1 class="font-black text-lg tracking-tight text-white leading-tight">E-Administrasi</h1>
-                    <p class="text-[11px] text-orange-400 font-bold tracking-wide">Sistem Informasi Sekolah</p>
+                    <h1 class="font-black text-base tracking-tight text-white leading-tight">E-Administrasi</h1>
+                    <p class="text-[10px] text-orange-400 font-bold tracking-wide">Sistem Informasi Sekolah</p>
                 </div>
             </div>
 
             <!-- Profile Info Card -->
-            <div class="p-4 mx-3 my-4 bg-zinc-950/80 rounded-2xl border border-zinc-800/80 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center font-black text-zinc-950 shadow-md">
+            <!-- <div class="p-3 mx-3 my-4 bg-zinc-900/90 rounded-xl border border-zinc-800/80 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center font-black text-xs text-zinc-950 shadow-md shrink-0">
                     {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
-                    <h4 class="font-bold text-sm text-zinc-100 truncate">{{ auth()->user()->name ?? 'Pengguna' }}</h4>
-                    <span class="inline-block px-2 py-0.5 text-[10px] font-black rounded-md uppercase tracking-wider bg-orange-500/10 text-orange-400 border border-orange-500/30">
+                    <h4 class="font-bold text-xs text-zinc-100 truncate leading-tight">{{ auth()->user()->name ?? 'Pengguna' }}</h4>
+                    <span class="inline-block mt-0.5 px-2 py-0.5 text-[9px] font-black rounded-md uppercase tracking-wider bg-orange-500/10 text-orange-400 border border-orange-500/30">
                         {{ auth()->user()->role }}
                     </span>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Navigation Links -->
             <nav class="flex-1 px-3 space-y-1.5 overflow-y-auto">
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-800 hover:text-orange-400' }}">
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-900 hover:text-orange-400' }}">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="{{ route('pengajuan.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('pengajuan.*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-800 hover:text-orange-400' }}">
+                <a href="{{ route('pengajuan.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('pengajuan.index*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-900 hover:text-orange-400' }}">
                     <i data-lucide="file-text" class="w-5 h-5"></i>
                     <span>{{ auth()->user()->isSiswa() ? 'Pengajuan Saya' : 'Daftar Pengajuan' }}</span>
                 </a>
 
                 @if(auth()->user()->isSiswa())
-                    <a href="{{ route('pengajuan.create') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('pengajuan.create') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-800 hover:text-orange-400' }}">
+                    <a href="{{ route('pengajuan.create') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('pengajuan.create') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-900 hover:text-orange-400' }}">
                         <i data-lucide="plus-circle" class="w-5 h-5"></i>
                         <span>Buat Surat Baru</span>
                     </a>
@@ -128,17 +121,17 @@
                 @if(auth()->user()->isAdmin())
                     <div class="pt-4 pb-1 px-4 text-[11px] font-black tracking-widest text-zinc-500 uppercase">Administrator</div>
 
-                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('siswa.*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-800 hover:text-orange-400' }}">
+                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('siswa.*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-900 hover:text-orange-400' }}">
                         <i data-lucide="users" class="w-5 h-5"></i>
                         <span>Kelola Siswa</span>
                     </a>
 
-                    <a href="{{ route('jenis-surat.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('jenis-surat.*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-800 hover:text-orange-400' }}">
+                    <a href="{{ route('jenis-surat.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('jenis-surat.*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-900 hover:text-orange-400' }}">
                         <i data-lucide="folder-kanban" class="w-5 h-5"></i>
                         <span>Jenis Surat</span>
                     </a>
 
-                    <a href="{{ route('users.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('users.*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-800 hover:text-orange-400' }}">
+                    <a href="{{ route('users.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ request()->routeIs('users.*') ? 'bg-orange-500 text-zinc-950 shadow-lg shadow-orange-500/30' : 'text-zinc-400 hover:bg-zinc-900 hover:text-orange-400' }}">
                         <i data-lucide="shield-check" class="w-5 h-5"></i>
                         <span>Kelola Pengguna</span>
                     </a>
@@ -160,13 +153,13 @@
         <!-- Main Content Area -->
         <div class="flex-1 flex flex-col overflow-y-auto bg-zinc-950">
             <!-- Top Header -->
-            <header class="bg-zinc-900/90 backdrop-blur-md border-b border-zinc-800/80 sticky top-0 z-10 px-8 py-4 flex items-center justify-between">
+            <header class="px-8 py-5 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800/80 sticky top-0 z-30 flex items-center justify-between">
                 <div>
-                    <h2 class="text-xl font-extrabold text-white">@yield('page-title', 'Dashboard')</h2>
-                    <p class="text-xs text-orange-400/90 font-medium">Sistem Pengajuan Administrasi Surat Online • SMK XI RPL</p>
+                    <h2 class="text-xl font-extrabold text-white leading-tight">@yield('page-title', 'Dashboard')</h2>
+                    <p class="text-[10px] text-orange-400 font-bold tracking-wide mt-0.5">Sistem Pengajuan Administrasi Surat Online</p>
                 </div>
                 <div class="flex items-center gap-4">
-                    <span class="text-xs font-bold text-zinc-300 bg-zinc-800/80 px-3.5 py-1.5 rounded-xl border border-zinc-700/60">
+                    <span class="text-xs font-bold text-zinc-300 bg-zinc-900/80 px-3.5 py-1.5 rounded-xl border border-zinc-800/80">
                         <i data-lucide="calendar" class="inline w-3.5 h-3.5 mr-1 text-orange-400"></i>
                         {{ now()->format('d M Y') }}
                     </span>
@@ -179,7 +172,7 @@
             </main>
 
             <!-- Footer -->
-            <footer class="bg-zinc-900 border-t border-zinc-800/80 py-4 px-8 text-center text-xs text-zinc-500">
+            <footer class="bg-zinc-950 border-t border-zinc-800/80 py-4 px-8 text-center text-xs text-zinc-500">
                 &copy; {{ date('Y') }} <strong class="text-orange-400">Administrasi Sekolah</strong> • Dikembangkan oleh <strong class="text-white">KAYLA ARTALITA (XI-3 RPL)</strong>.
             </footer>
         </div>

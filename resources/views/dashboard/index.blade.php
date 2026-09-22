@@ -6,7 +6,7 @@
 @section('content')
 <div class="space-y-8">
 
-    <!-- Hero Orange & Black Banner -->
+    <!-- Hero Orange Banner -->
     <div class="gradient-orange rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden orange-glow">
         <div class="absolute -right-10 -bottom-10 opacity-20 text-black">
             <i data-lucide="zap" class="w-72 h-72"></i>
@@ -31,10 +31,10 @@
         </div>
     </div>
 
-    <!-- Stats Grid (Vibrant Orange & Sleek Dark Cards) -->
+    <!-- Stats Grid (Sleek Dark & Vibrant Orange Highlight Cards) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Card Total -->
-        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 shadow-xl flex items-center justify-between hover:border-orange-500/50 transition-all">
+        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800/80 shadow-xl flex items-center justify-between hover:border-orange-500/50 transition-all">
             <div>
                 <p class="text-xs font-black uppercase tracking-wider text-zinc-400">Total Pengajuan</p>
                 <h3 class="text-3xl font-black text-white mt-1">{{ $totalPengajuan }}</h3>
@@ -46,7 +46,7 @@
         </div>
 
         <!-- Card Pending -->
-        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 shadow-xl flex items-center justify-between hover:border-amber-500/50 transition-all">
+        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800/80 shadow-xl flex items-center justify-between hover:border-amber-500/50 transition-all">
             <div>
                 <p class="text-xs font-black uppercase tracking-wider text-amber-400">Menunggu (Pending)</p>
                 <h3 class="text-3xl font-black text-amber-400 mt-1">{{ $pendingCount }}</h3>
@@ -58,7 +58,7 @@
         </div>
 
         <!-- Card Disetujui -->
-        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 shadow-xl flex items-center justify-between hover:border-emerald-500/50 transition-all">
+        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800/80 shadow-xl flex items-center justify-between hover:border-emerald-500/50 transition-all">
             <div>
                 <p class="text-xs font-black uppercase tracking-wider text-emerald-400">Disetujui</p>
                 <h3 class="text-3xl font-black text-emerald-400 mt-1">{{ $disetujuiCount }}</h3>
@@ -70,7 +70,7 @@
         </div>
 
         <!-- Card Ditolak -->
-        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800 shadow-xl flex items-center justify-between hover:border-rose-500/50 transition-all">
+        <div class="bg-zinc-900 p-6 rounded-2xl border border-zinc-800/80 shadow-xl flex items-center justify-between hover:border-rose-500/50 transition-all">
             <div>
                 <p class="text-xs font-black uppercase tracking-wider text-rose-400">Ditolak</p>
                 <h3 class="text-3xl font-black text-rose-400 mt-1">{{ $ditolakCount }}</h3>
@@ -87,7 +87,7 @@
         <div class="p-6 border-b border-zinc-800/80 flex items-center justify-between bg-zinc-950/60">
             <div>
                 <h3 class="font-black text-lg text-white">Pengajuan Terbaru</h3>
-                <p class="text-xs text-zinc-400">Daftar transaksi permohonan administrasi surat terbaru</p>
+                <p class="text-xs text-zinc-400 font-medium">Daftar transaksi permohonan administrasi surat terbaru</p>
             </div>
             <a href="{{ route('pengajuan.index') }}" class="text-xs font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1 bg-orange-500/10 px-3.5 py-2 rounded-xl border border-orange-500/20 transition-all">
                 <span>Lihat Semua Data</span>
@@ -98,7 +98,7 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-zinc-950 border-b border-zinc-800 text-xs font-black text-orange-400/90 uppercase tracking-wider">
+                    <tr class="bg-zinc-950 border-b border-zinc-800/80 text-xs font-black text-orange-400 uppercase tracking-wider">
                         <th class="py-4 px-6">Tanggal</th>
                         @if(!auth()->user()->isSiswa())
                             <th class="py-4 px-6">Siswa</th>
@@ -121,10 +121,10 @@
                                     <span class="block text-[11px] font-normal text-zinc-400">NIS: {{ $item->siswa->nis ?? '-' }}</span>
                                 </td>
                             @endif
-                            <td class="py-4 px-6 font-semibold text-orange-400">
+                            <td class="py-4 px-6 font-bold text-orange-400">
                                 {{ $item->jenisSurat ? $item->jenisSurat->nama_surat : '-' }}
                             </td>
-                            <td class="py-4 px-6 text-xs text-zinc-300 max-w-xs truncate">
+                            <td class="py-4 px-6 text-xs text-zinc-300 max-w-xs truncate font-medium">
                                 {{ $item->keterangan }}
                             </td>
                             <td class="py-4 px-6 whitespace-nowrap">

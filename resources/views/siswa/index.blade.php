@@ -32,8 +32,8 @@
 
         <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl flex items-center justify-between">
             <div>
-                <p class="text-xs font-black uppercase tracking-wider text-emerald-400">Status Akun</p>
-                <h3 class="text-3xl font-black text-emerald-400 mt-1">100% Aktif</h3>
+                <p class="text-xs font-black uppercase tracking-wider text-emerald-400">Kelas Terdaftar</p>
+                <h3 class="text-3xl font-black text-emerald-400 mt-1">X-XI</h3>
                 <p class="text-xs text-zinc-400 font-medium mt-1">Terverifikasi & terhubung ke Auth</p>
             </div>
             <div class="p-4 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -46,9 +46,14 @@
     <div class="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <form action="{{ route('siswa.index') }}" method="GET" class="flex-1 flex items-center gap-3">
             <div class="relative flex-1">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari NIS, Nama Siswa, Kelas, atau Jurusan..."
-                    class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-semibold text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                <i data-lucide="search" class="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5"></i>
+                <input
+    type="text"
+    name="search"
+    id="searchInputSiswa"
+    value="{{ request('search') }}"
+    placeholder="Cari NIS, Nama Siswa, Kelas, atau Jurusan..."
+    class="w-full pl-10 pr-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-xs font-semibold text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+>
             </div>
             <button type="submit" class="px-5 py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold rounded-xl text-xs transition-all border border-zinc-700 flex items-center gap-1.5">
                 <i data-lucide="filter" class="w-4 h-4 text-orange-400"></i>
@@ -68,7 +73,7 @@
     </div>
 
     <!-- Full Width Form Card (Hidden by default, toggled with smooth animation) -->
-    <div id="formAddSiswa" class="hidden bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl space-y-6">
+    <div id="formAddSiswa" class="{{ $errors->any() ? '' : 'hidden' }} bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl space-y-6">
         <div class="border-b border-zinc-800 pb-4 flex items-center justify-between">
             <div>
                 <h4 class="text-lg font-black text-white">+ Tambah Data Siswa & Akun Login Baru</h4>
@@ -79,28 +84,44 @@
             </button>
         </div>
 
+        @if($errors->any())
+            <div class="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs space-y-1">
+                <p class="font-black">❌ Gagal Menyimpan Data Siswa:</p>
+                <ul class="list-disc list-inside space-y-0.5">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('siswa.store') }}" method="POST" class="space-y-6">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
                 <div>
                     <label class="block font-black uppercase text-zinc-300 mb-2">NIS Siswa <span class="text-orange-500">*</span></label>
-                    <input type="text" name="nis" placeholder="Contoh: 20261103" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
+                    <input type="text" name="nis" value="{{ old('nis') }}" placeholder="Contoh: 20261103" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
                 </div>
                 <div>
                     <label class="block font-black uppercase text-zinc-300 mb-2">Nama Lengkap <span class="text-orange-500">*</span></label>
-                    <input type="text" name="nama" placeholder="Nama Lengkap Siswa" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
+                    <input type="text" name="nama" value="{{ old('nama') }}" placeholder="Nama Lengkap Siswa" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
                 </div>
                 <div>
                     <label class="block font-black uppercase text-zinc-300 mb-2">Kelas <span class="text-orange-500">*</span></label>
-                    <input type="text" name="kelas" placeholder="Contoh: XI-3" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
+                    <input type="text" name="kelas" value="{{ old('kelas') }}" placeholder="Contoh: XI-3" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
                 </div>
                 <div>
-                    <label class="block font-black uppercase text-zinc-300 mb-2">Jurusan <span class="text-orange-500">*</span></label>
-                    <input type="text" name="jurusan" placeholder="Contoh: RPL" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
+                <label class="block font-black uppercase text-zinc-300 mb-2">Jurusan <span class="text-orange-500">*</span></label>
+                <select name="jurusan" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
+                    <option value="">Pilih Jurusan</option>
+                    <option value="TKJ" {{ old('jurusan') == 'TKJ' ? 'selected' : '' }}>TKJ</option>
+                    <option value="RPL" {{ old('jurusan') == 'RPL' ? 'selected' : '' }}>RPL</option>
+                    <option value="DKV" {{ old('jurusan') == 'DKV' ? 'selected' : '' }}>DKV</option>
+                </select>
                 </div>
                 <div>
                     <label class="block font-black uppercase text-zinc-300 mb-2">Email Akun Login <span class="text-orange-500">*</span></label>
-                    <input type="email" name="email" placeholder="Contoh: siswa@sekolah.sch.id" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Contoh: siswa@sekolah.sch.id" required class="w-full p-3.5 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold focus:ring-2 focus:ring-orange-500">
                 </div>
                 <div>
                     <label class="block font-black uppercase text-zinc-300 mb-2">Password Login <span class="text-orange-500">*</span></label>
@@ -155,10 +176,31 @@
                                 </div>
                             </td>
                             <td class="py-4 px-6 text-xs whitespace-nowrap">
-                                <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-[11px] font-black inline-flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Aktif
-                                </span>
-                            </td>
+    <form action="{{ route('siswa.toggle-status', $siswa->id) }}" method="POST" class="inline">
+        @csrf
+        @method('PATCH')
+
+        @if($siswa->status === 'aktif')
+            <button
+                type="submit"
+                class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full text-[11px] font-black inline-flex items-center gap-1 hover:bg-emerald-500/20 transition-all"
+                title="Klik untuk menonaktifkan siswa"
+            >
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                Aktif
+            </button>
+        @else
+            <button
+                type="submit"
+                class="px-2.5 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 rounded-full text-[11px] font-black inline-flex items-center gap-1 hover:bg-rose-500/20 transition-all"
+                title="Klik untuk mengaktifkan siswa"
+            >
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                Nonaktif
+            </button>
+        @endif
+    </form>
+</td>
                             <td class="py-4 px-6 text-right whitespace-nowrap space-x-1">
                                 <button type="button" onclick="openEditSiswa('{{ $siswa->id }}', '{{ $siswa->nis }}', '{{ addslashes($siswa->nama) }}', '{{ addslashes($siswa->kelas) }}', '{{ addslashes($siswa->jurusan) }}', '{{ addslashes($siswa->user->email ?? '') }}')" class="px-3.5 py-2 bg-zinc-800 text-zinc-200 hover:bg-zinc-700 rounded-xl text-xs font-bold transition-all border border-zinc-700 inline-flex items-center gap-1.5 shadow-sm">
                                     <i data-lucide="edit-3" class="w-3.5 h-3.5 text-orange-400"></i> Edit
@@ -216,8 +258,13 @@
                     <input type="text" id="edit_kelas" name="kelas" required class="w-full p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold">
                 </div>
                 <div>
-                    <label class="block font-black text-zinc-300 mb-1 uppercase">Jurusan</label>
-                    <input type="text" id="edit_jurusan" name="jurusan" required class="w-full p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold">
+                <label class="block font-black text-zinc-300 mb-1 uppercase">Jurusan</label>
+                <select id="edit_jurusan" name="jurusan" required class="w-full p-3 bg-zinc-950 border border-zinc-800 rounded-xl text-white font-semibold">
+                    <option value="">Pilih Jurusan</option>
+                    <option value="TKJ">TKJ</option>
+                    <option value="RPL">RPL</option>
+                    <option value="DKV">DKV</option>
+                </select>
                 </div>
                 <div class="col-span-2">
                     <label class="block font-black text-zinc-300 mb-1 uppercase">Email Akun Login</label>
@@ -236,7 +283,6 @@
         </form>
     </div>
 </div>
-
 <script>
     function toggleForm(id) {
         document.getElementById(id).classList.toggle('hidden');
@@ -254,6 +300,21 @@
 
     function closeEditSiswa() {
         document.getElementById('modalEditSiswa').classList.add('hidden');
+    }
+
+    // Search otomatis ke Laravel
+    const searchInput = document.getElementById('searchInputSiswa');
+
+    if (searchInput) {
+        let searchTimer;
+
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+
+            searchTimer = setTimeout(() => {
+                this.form.submit();
+            }, 400);
+        });
     }
 </script>
 @endsection

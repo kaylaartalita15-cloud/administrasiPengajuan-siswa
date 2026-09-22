@@ -17,6 +17,7 @@ class Siswa extends Model
         'nama',
         'kelas',
         'jurusan',
+        'status',
     ];
 
     public function user(): BelongsTo

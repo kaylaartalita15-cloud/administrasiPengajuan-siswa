@@ -167,6 +167,11 @@ class PengajuanController extends Controller
 
     public function updateStatus(UpdateStatusPengajuanRequest $request, Pengajuan $pengajuan)
     {
+        if ($pengajuan->status !== 'pending') {
+            return redirect()->route('pengajuan.show', $pengajuan->id)
+                ->with('error', 'Status pengajuan ini sudah diproses dan tidak dapat diubah lagi.');
+        }
+
         DB::transaction(function () use ($request, $pengajuan) {
             $pengajuan->update([
                 'status' => $request->status,

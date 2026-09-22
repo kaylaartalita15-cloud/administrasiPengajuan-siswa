@@ -8,6 +8,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\UserController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes - Project Administrasi Sekolah (LKPD Sumatif XI RPL)
@@ -39,5 +40,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('jenis-surat', JenisSuratController::class)->except(['show', 'create', 'edit']);
         Route::resource('users', UserController::class)->except(['show', 'create', 'edit']);
     });
-
+    Route::patch('/siswa/{siswa}/toggle-status', [SiswaController::class, 'toggleStatus'])
+    ->name('siswa.toggle-status');
 });
