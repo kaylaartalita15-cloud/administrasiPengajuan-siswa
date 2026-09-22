@@ -3,6 +3,8 @@
 @section('title', 'Kelola Data Siswa')
 @section('page-title', 'Manajemen Data Siswa')
 
+
+<!-- ashada -->
 @section('content')
 <div class="space-y-6">
 
